@@ -1,10 +1,20 @@
 import dotenv from "dotenv";
 import { getFile } from "./api/figmaClient";
-import { parseNode } from "./parser/nodeParser";
+import { parseNode, ParsedNode } from "./parser/nodeParser";
 import { generateReactCode } from "./generator/reactGenerator";
 import fs from "fs";
+import prettier from "prettier";
 
 dotenv.config();
+
+function logNodeTypes(nodes: any[], depth = 0) {
+  for (const node of nodes) {
+    console.log(" ".repeat(depth * 2) + `- ${node.type} (${node.name})`);
+    if (node.children) {
+      logNodeTypes(node.children, depth + 1);
+    }
+  }
+}
 
 async function main() {
   const fileKey = process.env.FIGMA_FILE_KEY;
@@ -26,24 +36,46 @@ async function main() {
 
     console.log(`✅ Got ${nodes.length} top-level nodes`);
 
-    const parsedNodes = nodes
+    const parsedNodes: ParsedNode[] = nodes
       .map((node: any) => parseNode(node))
       .filter((n: any) => n !== null);
 
     console.log(`📝 Parsed ${parsedNodes.length} nodes`);
 
-    const generatedCode = parsedNodes
-      .map((node: any) => generateReactCode(node))
-      .join("\n\n");
+    // Wrap in a fragment so JSX is always valid
+    const wrappedCode = `
+    import React from "react";
+
+    export default function GeneratedUI() {
+      return (
+        <>
+          ${parsedNodes.map((node: ParsedNode) => generateReactCode(node)).join("\n")}
+        </>
+      );
+    }
+    `;
+
+
+    // Format with Prettier
+    const formattedCode = await prettier.format(wrappedCode, {
+      parser: "typescript",
+      singleQuote: true,
+      trailingComma: "es5",
+    });
 
     // Save to output file
-    fs.writeFileSync("output/GeneratedUI.tsx", generatedCode);
+    fs.writeFileSync("output/GeneratedUI.tsx", formattedCode);
 
     console.log("🎉 Code generation complete! Check output/GeneratedUI.tsx");
+
+    // After parsing:
+    console.log("🔎 Parsed node tree:");
+    logNodeTypes(parsedNodes);
   } catch (err) {
     console.error("❌ Error:", err);
   }
 }
+
 
 main();
 
