@@ -1,31 +1,31 @@
 // src/generator/renderers/imageRenderer.ts
 import { ParsedNode } from "../../types";
 
-/**
- * Render an IMAGE node as a div with background image.
- */
 export function renderImage(node: ParsedNode): string {
   if (!node.fills || node.fills.length === 0) {
-    return `<div />`;
+    return "<div />";
   }
 
-  // For now, assume first paint is the image
-  const imageFill = node.fills.find((f) => f.type === "IMAGE");
-
-  if (!imageFill) {
-    return `<div />`;
+  const fill = node.fills.find(f => f.type === "IMAGE");
+  if (!fill) {
+    return "<div />";
   }
 
-  const url = imageFill.imageUrl || "placeholder.png";
+  // ✅ Support both Figma (imageRef + size) and test convenience (imageUrl + width/height)
+  const imageUrl = fill.imageRef || fill.imageUrl;
+  const width = node.size?.width ?? node.width;
+  const height = node.size?.height ?? node.height;
 
-  const styles: string[] = [];
-  styles.push(`backgroundImage: "url('${url}')"`);
-  styles.push("backgroundSize: 'cover'");
-  styles.push("backgroundRepeat: 'no-repeat'");
-  styles.push("backgroundPosition: 'center'");
-  if (node.width) styles.push(`width: ${node.width}px`);
-  if (node.height) styles.push(`height: ${node.height}px`);
+  if (!imageUrl || !width || !height) {
+    return "<div />";
+  }
 
-  return `<img src="${url}" style={{ ${styles.join(", ")} }} alt="${node.name ?? ""}" />`;
+  return `<div style={{
+    width: ${width}px,
+    height: ${height}px,
+    backgroundImage: "url('${imageUrl}')",
+    backgroundSize: "cover",
+    backgroundPosition: "center"
+  }} />`;
 }
 
