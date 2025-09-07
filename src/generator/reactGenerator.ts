@@ -5,6 +5,7 @@ import { renderRectangle } from "./renderers/rectangleRenderer";
 import { renderEllipse } from "./renderers/ellipseRenderer";
 import { renderContainer } from "./renderers/containerRenderer";
 import { renderImage } from "./renderers/imageRenderer";
+import { renderLine } from "./renderers/lineRenderer";
 
 /**
  * Render a single ParsedNode to JSX string.
@@ -20,6 +21,8 @@ export function renderNode(node: ParsedNode): string {
       return renderEllipse(node);
     case "IMAGE": // ✅ Added support for images
       return renderImage(node);
+    case "LINE":
+      return renderLine(node);
     case "FRAME":
     case "GROUP":
     case "COMPONENT":
