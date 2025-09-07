@@ -4,7 +4,6 @@ export interface FigmaNode {
   name?: string;
   type: string;
   children?: FigmaNode[];
-  // keep other properties open for practical parsing
   [key: string]: any;
 }
 
@@ -12,6 +11,10 @@ export type Paint = {
   type: string;
   color?: { r: number; g: number; b: number; a?: number };
   opacity?: number;
+  imageRef?: string;
+
+  // 👇 Added for convenience in generators/tests
+  imageUrl?: string;
 };
 
 /**
@@ -19,8 +22,8 @@ export type Paint = {
  */
 export interface ParsedLayout {
   layoutMode?: "HORIZONTAL" | "VERTICAL" | "NONE";
-  primaryAxisAlignItems?: string; // e.g. "MIN" | "CENTER" | "MAX" | "SPACE_BETWEEN"
-  counterAxisAlignItems?: string; // e.g. "MIN" | "CENTER" | "MAX"
+  primaryAxisAlignItems?: string;
+  counterAxisAlignItems?: string;
   itemSpacing?: number;
   paddingTop?: number;
   paddingRight?: number;
@@ -42,6 +45,10 @@ export interface ParsedNode {
 
   // box
   size?: { width: number; height: number };
+
+  // 👇 Added for convenience in tests
+  width?: number;
+  height?: number;
 
   // paints
   fills?: Paint[];
