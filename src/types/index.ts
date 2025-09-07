@@ -14,10 +14,28 @@ export type Paint = {
   opacity?: number;
 };
 
+/**
+ * Layout description parsed from container nodes (FRAME/GROUP/CANVAS/COMPONENT)
+ */
+export interface ParsedLayout {
+  layoutMode?: "HORIZONTAL" | "VERTICAL" | "NONE";
+  primaryAxisAlignItems?: string; // e.g. "MIN" | "CENTER" | "MAX" | "SPACE_BETWEEN"
+  counterAxisAlignItems?: string; // e.g. "MIN" | "CENTER" | "MAX"
+  itemSpacing?: number;
+  paddingTop?: number;
+  paddingRight?: number;
+  paddingBottom?: number;
+  paddingLeft?: number;
+}
+
+/**
+ * ParsedNode is the canonical internal representation used by generators.
+ */
 export interface ParsedNode {
   id: string;
   name?: string;
   type: string;
+
   // text
   content?: string;
   style?: Record<string, any>;
@@ -34,5 +52,8 @@ export interface ParsedNode {
 
   // children
   children?: ParsedNode[];
+
+  // layout information (for containers)
+  layout?: ParsedLayout;
 }
 
