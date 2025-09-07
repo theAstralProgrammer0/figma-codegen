@@ -1,7 +1,8 @@
+// src/index.ts
 import dotenv from "dotenv";
 import { getFile } from "./api/figmaClient";
-import { parseNode, ParsedNode } from "./parser/nodeParser";
-import { generateReactCode } from "./generator/reactGenerator";
+import { parseNode } from "./parser";
+import { generateReactCode } from "./generator";
 import fs from "fs";
 import prettier from "prettier";
 
@@ -18,7 +19,6 @@ function logNodeTypes(nodes: any[], depth = 0) {
 
 async function main() {
   const fileKey = process.env.FIGMA_FILE_KEY;
-
   if (!fileKey) {
     console.error("❌ Missing FIGMA_FILE_KEY in .env");
     process.exit(1);
@@ -33,49 +33,40 @@ async function main() {
     }
 
     const nodes = data.document.children;
-
     console.log(`✅ Got ${nodes.length} top-level nodes`);
 
-    const parsedNodes: ParsedNode[] = nodes
-      .map((node: any) => parseNode(node))
-      .filter((n: any) => n !== null);
+    const parsedNodes = nodes
+      .map((n: any) => parseNode(n))
+      .filter((p: any) => p !== null) as any[];
 
     console.log(`📝 Parsed ${parsedNodes.length} nodes`);
 
-    // Wrap in a fragment so JSX is always valid
-    const wrappedCode = `
-    import React from "react";
+    // generate code from parsedNodes array (each may be a CANVAS/frame)
+    const children = parsedNodes.map((p) => generateReactCode(p)).join("\n\n");
 
-    export default function GeneratedUI() {
-      return (
-        <>
-          ${parsedNodes.map((node: ParsedNode) => generateReactCode(node)).join("\n")}
-        </>
-      );
-    }
-    `;
+    const wrappedCode = `import React from 'react';
 
+export default function GeneratedUI() {
+  return (
+    <>
+      ${children}
+    </>
+  );
+}
+`;
 
-    // Format with Prettier
-    const formattedCode = await prettier.format(wrappedCode, {
-      parser: "typescript",
-      singleQuote: true,
-      trailingComma: "es5",
-    });
+    const formatted = await prettier.format(wrappedCode, { parser: "typescript" });
 
-    // Save to output file
-    fs.writeFileSync("output/GeneratedUI.tsx", formattedCode);
+    fs.mkdirSync("output", { recursive: true });
+    fs.writeFileSync("output/GeneratedUI.tsx", formatted, "utf8");
 
     console.log("🎉 Code generation complete! Check output/GeneratedUI.tsx");
-
-    // After parsing:
     console.log("🔎 Parsed node tree:");
     logNodeTypes(parsedNodes);
   } catch (err) {
     console.error("❌ Error:", err);
   }
 }
-
 
 main();
 
