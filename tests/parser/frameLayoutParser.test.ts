@@ -1,32 +1,28 @@
-import { parseNode } from "../../src/parser";
+import { parseFrameLayout } from "../../src/parser/parsers/frameLayoutParser";
 import { FigmaNode } from "../../src/types";
 
-describe("frame parser with layout", () => {
-  it("parses layout props from frame (layoutMode, spacing, padding)", () => {
-    const frame: FigmaNode = {
-      id: "f1",
+describe("frameLayoutParser", () => {
+  it("parses frame layout props correctly", () => {
+    const node: FigmaNode = {
+      id: "123",
       type: "FRAME",
-      name: "Row",
       layoutMode: "HORIZONTAL",
-      primaryAxisAlignItems: "SPACE_BETWEEN",
-      counterAxisAlignItems: "CENTER",
-      itemSpacing: 12,
+      primaryAxisAlignItems: "CENTER",
+      counterAxisAlignItems: "MIN",
+      itemSpacing: 16,
       paddingTop: 8,
-      paddingRight: 8,
       paddingBottom: 8,
-      paddingLeft: 8,
-      children: [
-        { id: "t1", type: "TEXT", characters: "A", name: "A" },
-        { id: "t2", type: "TEXT", characters: "B", name: "B" }
-      ]
-    } as any;
+      paddingLeft: 4,
+      paddingRight: 4,
+      children: [],
+    };
 
-    const parsed = parseNode(frame);
-    expect(parsed).not.toBeNull();
-    expect(parsed!.layout).toBeDefined();
-    expect(parsed!.layout!.layoutMode).toBe("HORIZONTAL");
-    expect(parsed!.layout!.itemSpacing).toBe(12);
-    expect(parsed!.layout!.paddingTop).toBe(8);
+    const parsed = parseFrameLayout(node);
+
+    expect(parsed.layout?.layoutMode).toBe("HORIZONTAL");
+    expect(parsed.layout?.primaryAxisAlignItems).toBe("CENTER");
+    expect(parsed.layout?.itemSpacing).toBe(16);
+    expect(parsed.layout?.paddingTop).toBe(8);
   });
 });
 
