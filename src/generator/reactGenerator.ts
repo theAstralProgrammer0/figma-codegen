@@ -1,4 +1,3 @@
-// src/generator/reactGenerator.ts
 import { ParsedNode } from "../types";
 import { renderText } from "./renderers/textRenderer";
 import { renderRectangle } from "./renderers/rectangleRenderer";
@@ -9,6 +8,7 @@ import { renderLine } from "./renderers/lineRenderer";
 import { renderVector } from "./renderers/vectorRenderer";
 import { renderStar } from "./renderers/starRenderer";
 import { renderPolygon } from "./renderers/polygonRenderer";
+import { renderRegularPolygon } from "./renderers/regularPolygonRenderer";
 
 /**
  * Render a single ParsedNode to JSX string.
@@ -22,7 +22,7 @@ export function renderNode(node: ParsedNode): string {
       return renderRectangle(node);
     case "ELLIPSE":
       return renderEllipse(node);
-    case "IMAGE": // ✅ Added support for images
+    case "IMAGE":
       return renderImage(node);
     case "LINE":
       return renderLine(node);
@@ -32,6 +32,8 @@ export function renderNode(node: ParsedNode): string {
       return renderStar(node);
     case "POLYGON":
       return renderPolygon(node);
+    case "REGULAR_POLYGON":
+      return renderRegularPolygon(node);
     case "FRAME":
     case "GROUP":
     case "COMPONENT":

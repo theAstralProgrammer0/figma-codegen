@@ -3,6 +3,8 @@ import { FigmaNode, ParsedNode, ParsedLayout } from "../../types";
 import { parseText } from "./textParser";
 import { parseRectangle } from "./rectangleParser";
 import { parseEllipse } from "./ellipseParser";
+import { parsePolygon } from "./polygonParser";
+import { parseRegularPolygon } from "./regularPolygonParser";
 
 /**
  * Parse container-like nodes: FRAME, GROUP, CANVAS, COMPONENT
@@ -65,6 +67,10 @@ export function parseContainer(node: FigmaNode): ParsedNode | null {
           return parseRectangle(child);
         case "ELLIPSE":
           return parseEllipse(child);
+        case "POLYGON":
+          return parsePolygon(child);
+        case "REGULAR_POLYGON":
+          return parseRegularPolygon(child);
         case "FRAME":
         case "GROUP":
         case "CANVAS":

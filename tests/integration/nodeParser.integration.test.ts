@@ -39,13 +39,22 @@ describe("Node parser + generator integration", () => {
           cornerRadius: 12,
           pointCount: 3,
           fills: [{ type: "SOLID", color: { r: 1, g: 0, b: 0 } }]
+        },
+        {
+          id: "104",
+          type: "REGULAR_POLYGON",
+          name: "Hexagon",
+          width: 120,
+          height: 120,
+          pointCount: 6,
+          fills: [{ type: "SOLID", color: { r: 0, g: 0, b: 1 } }]
         }
       ]
     };
 
     const parsed = parseNode(figmaTree);
     expect(parsed).not.toBeNull();
-    expect(parsed?.children?.length).toBe(2);
+    expect(parsed?.children?.length).toBe(4);
 
     const code = generateReactCode(parsed!);
 
@@ -62,6 +71,16 @@ describe("Node parser + generator integration", () => {
     expect(code).toContain("width: 200");
     expect(code).toContain("height: 100");
     expect(code).toContain("backgroundColor: \"rgba(255,0,0,1)\"");
+
+    // Should contain polygon (triangle)
+    expect(code).toContain("<polygon");
+    expect(code).toContain("points=");
+
+    // Should contain regular polygon (hexagon)
+    expect(code).toContain("<polygon");
+    expect(code).toContain("fill=\"rgba(0,0,255,1)\"");
+    expect(code).toContain("points=");
+    expect(code).toContain('opacity="1"');
   });
 });
 
