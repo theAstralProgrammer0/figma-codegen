@@ -6,6 +6,9 @@ import { renderEllipse } from "./renderers/ellipseRenderer";
 import { renderContainer } from "./renderers/containerRenderer";
 import { renderImage } from "./renderers/imageRenderer";
 import { renderLine } from "./renderers/lineRenderer";
+import { renderVector } from "./renderers/vectorRenderer";
+import { renderStar } from "./renderers/starRenderer";
+import { renderPolygon } from "./renderers/polygonRenderer";
 
 /**
  * Render a single ParsedNode to JSX string.
@@ -23,6 +26,12 @@ export function renderNode(node: ParsedNode): string {
       return renderImage(node);
     case "LINE":
       return renderLine(node);
+    case "VECTOR":
+      return renderVector(node);
+    case "STAR":
+      return renderStar(node);
+    case "POLYGON":
+      return renderPolygon(node);
     case "FRAME":
     case "GROUP":
     case "COMPONENT":

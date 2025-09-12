@@ -15,7 +15,7 @@ describe("renderLine", () => {
 
     expect(code).toContain("width: 120px");
     expect(code).toContain("height: 2px");
-    expect(code).toContain("backgroundColor: 'rgba(0, 0, 0, 1)'");
+    expect(code).toContain("backgroundColor: \"rgba(0,0,0,1)\"");
   });
 
   it("falls back to defaults when no strokes", () => {
@@ -26,7 +26,7 @@ describe("renderLine", () => {
     };
 
     const code = renderLine(node);
-    expect(code).toContain("backgroundColor: 'black'");
+    expect(code).toContain("backgroundColor: \"black\"");
   });
 });
 

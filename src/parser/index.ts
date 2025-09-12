@@ -4,6 +4,7 @@ import { parseText } from "./parsers/textParser";
 import { parseRectangle } from "./parsers/rectangleParser";
 import { parseEllipse } from "./parsers/ellipseParser";
 import { parseContainer } from "./parsers/containerParser";
+import { parsePolygon } from "./parsers/polygonParser";
 
 /**
  * Dispatch node parsing to specific parsers.
@@ -19,6 +20,8 @@ export function parseNode(node: FigmaNode): ParsedNode | null {
       return parseRectangle(node);
     case "ELLIPSE":
       return parseEllipse(node);
+    case "POLYGON":
+      return parsePolygon(node);
     case "FRAME":
     case "GROUP":
     case "CANVAS":

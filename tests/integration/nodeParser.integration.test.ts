@@ -1,4 +1,3 @@
-// tests/integration/nodeParser.integration.test.ts
 import { parseNode } from "../../src/parser";
 import { generateReactCode } from "../../src/generator";
 import { FigmaNode } from "../../src/types";
@@ -30,6 +29,15 @@ describe("Node parser + generator integration", () => {
           type: "RECTANGLE",
           name: "Box",
           absoluteBoundingBox: { width: 200, height: 100 },
+          fills: [{ type: "SOLID", color: { r: 1, g: 0, b: 0 } }]
+        },
+        {
+          id: "103",
+          type: "POLYGON",
+          name: "Triangle",
+          absoluteBoundingBox: { width: 200, height: 100 },
+          cornerRadius: 12,
+          pointCount: 3,
           fills: [{ type: "SOLID", color: { r: 1, g: 0, b: 0 } }]
         }
       ]

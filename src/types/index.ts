@@ -43,6 +43,18 @@ export interface ParsedNode {
   content?: string;
   style?: Record<string, any>;
 
+  // vector
+  vectorPaths?: { data: string; windingRule?: "EVENODD" | "NONZERO" }[];
+
+  // star
+  pointCount?: number;
+  starInnerRadius?: number;
+
+  // polygon
+  polygonPoints?: { x: number; y: number }[];
+  cornerRadius?: number;
+
+
   // box
   size?: { width: number; height: number };
 
