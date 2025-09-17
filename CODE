@@ -1,0 +1,36 @@
+{
+  "name": "figma-codegen",
+  "version": "1.0.0",
+  "description": "Test-driven CLI tool to generate React/Next.js or HTML/CSS code from Figma files using Tailwind CSS",
+  "main": "eslint.config.js",
+  "scripts": {
+    "lint": "eslint . --ext .js,.ts,.jsx,.tsx",
+    "lint:fix": "eslint . --ext .js,.ts,.jsx,.tsx --fix",
+    "format": "prettier --write .",
+    "check": "npm run lint && npm run format:check",
+    "fix": "npm run lint:fix && npm run format",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theAstralProgrammer0/figma-codegen.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/theAstralProgrammer0/figma-codegen/issues"
+  },
+  "homepage": "https://github.com/theAstralProgrammer0/figma-codegen#readme",
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.6"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx,json,css,md}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  }
+}

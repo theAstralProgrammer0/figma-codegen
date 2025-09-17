@@ -1,0 +1,17 @@
+Dependencies:
+
+1. eslint → base linter
+
+2. prettier → formatter
+
+3. eslint-config-prettier → turns off ESLint rules that conflict with Prettier
+
+4. eslint-plugin-prettier → runs Prettier inside ESLint
+
+Scripts:
+
+Main:
+1. npm run check → CI/CD safe check (fails if lint/format issues exist).
+
+2. npm run fix → auto-fixes both ESLint + Prettier.
+
