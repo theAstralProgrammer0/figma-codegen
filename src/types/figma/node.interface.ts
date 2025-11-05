@@ -1,18 +1,22 @@
+import { Paint } from './paint.interface';
+import { Effect } from './effect.interface';
+import { Grid } from './grtid.interface';
+import { RGBA } from './color.interface';
+
 /**
  * Representation FigmaNode.
- * Supports Flexbox, Grid, Typography, and all layout/visual relevant to
- * Tailwind CSS generation.
+ * Supports Flexbox, Grid, Typography, and layout mappings for Tailwind.
  */
 export interface FigmaNode {
   id: string;
   name: string;
-  type: string;
+  type: 'DOCUMENT' | 'CANVAS' | 'FRAME' | 'GROUP' | 'VECTOR' | 'BOOLEAN' | 'STAR' | 'LINE' | 'ELLIPSE' | 'POLYGON' | 'RECTANGLE' | 'TEXT' | 'SLICE' | 'COMPONENT' | 'COMPONENT_SET' | 'INSTANCE' | 'BOOLEAN_OPERATION' | string;
   visible?: boolean;
 
   /** Hierarchy **/
   children?: FigmaNode[];
 
-  /** Layout type **/
+  /** Layout **/
   layoutMode?: 'NONE' | 'HORIZONTAL' | 'VERTICAL';
   layoutGrow?: number;
   layoutAlign?: 'INHERIT' | 'STRETCH' | 'MIN' | 'CENTER' | 'MAX';
@@ -21,7 +25,7 @@ export interface FigmaNode {
   gridStyleId?: string;
   layoutPositioning?: 'AUTO' | 'ABSOLUTE';
 
-  /** Flex/Grid alignment **/
+  /** Alignment **/
   primaryAxisAlignItems?: 'MIN' | 'MAX' | 'CENTER' | 'SPACE_BETWEEN' | 'SPACE_AROUND';
   counterAxisAlignItems?: 'MIN' | 'MAX' | 'CENTER' | 'BASELINE' | 'STRETCH';
   primaryAxisSizingMode?: 'FIXED' | 'AUTO';
@@ -42,7 +46,7 @@ export interface FigmaNode {
     vertical: 'TOP' | 'BOTTOM' | 'CENTER' | 'TOP_BOTTOM' | 'SCALE';
   };
 
-  /** Spacing & padding **/
+  /** Spacing **/
   itemSpacing?: number;
   paddingLeft?: number;
   paddingRight?: number;
@@ -64,12 +68,12 @@ export interface FigmaNode {
   resizingConstraint?: number;
   resizingType?: 'FIXED' | 'HUG' | 'FILL';
 
-  /** Flex sizing **/
+  /** Flex **/
   flexGrow?: number;
   flexShrink?: number;
   flexBasis?: number | 'AUTO';
 
-  /** Border & Radius **/
+  /** Borders **/
   strokeWeight?: number;
   strokeAlign?: 'INSIDE' | 'OUTSIDE' | 'CENTER';
   strokeMiterLimit?: number;
@@ -80,7 +84,7 @@ export interface FigmaNode {
   bottomLeftRadius?: number;
   bottomRightRadius?: number;
 
-  /** Appearance (fills, opacity, blends, fx) **/
+  /** Appearance **/
   fills?: Paint[];
   opacity?: number;
   effects?: Effect[];
@@ -105,18 +109,22 @@ export interface FigmaNode {
   fillGeometry?: any[];
   imageRef?: string;
 
-  /** Shadow / blur / masking **/
+  /** FX **/
   effectStyleId?: string;
   isMask?: boolean;
   maskType?: 'ALPHA' | 'LUMINANCE';
 
-  /** Overflow & clipping **/
+  /** Overflow **/
   clipsContent?: boolean;
   overflowDirection?: 'NONE' | 'HORIZONTAL' | 'VERTICAL' | 'BOTH';
 
-  /** Animation / transitions **/
+  /** Transitions **/
   transitionDuration?: number;
   transitionEasing?: string;
+
+  /** Components **/
+  componentId?: string;
+  mainComponent?: { id: string };
 
   /** Miscellaneous **/
   visibleOverride?: boolean;
