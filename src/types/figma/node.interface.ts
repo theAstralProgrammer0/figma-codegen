@@ -1,6 +1,6 @@
 import { Paint } from './paint.interface';
 import { Effect } from './effect.interface';
-import { Grid } from './grtid.interface';
+import { Grid } from './grid.interface';
 import { RGBA } from './color.interface';
 
 /**
